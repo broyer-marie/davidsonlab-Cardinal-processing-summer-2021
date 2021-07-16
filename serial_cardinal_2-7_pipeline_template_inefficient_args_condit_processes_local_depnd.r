@@ -39,6 +39,7 @@ data_mse <- readImzML(name,resolution = 5, units = "ppm", mass.range = c(70,600)
 
 #coerce into MSContinuousImagingExperiment due to documented and apparently uncorrected Cardinal error
 data <- as(data_mse, "MSContinuousImagingExperiment")
+
 #extra copy
 data_backup <- data
 
@@ -46,7 +47,7 @@ dir.create(write_dir)
 
 #initial plot of data
 png(paste(write_dir, name, "_first_100_pixels.png", sep = ""))
-plot(data,pixel=1:1,main="spectra for first 100 pixels")
+plot(data,pixel=1:100,main="spectra for first 100 pixels")
 dev.off()
 
 if (save_intermediates == TRUE) {
@@ -118,13 +119,13 @@ rm(data_f)
 source("utils2.R")
 png(paste(write_dir, name, "_data_norm_pick_align_filter_plot.png", sep = ""))
 .setup.layout(c(1,1),bg="white")
-plot(data_norm_pick_align_filter,pixel=1:ncol(data_norm_pick_align_filter),main="parallel")
+plot(data,pixel=1:ncol(data),main="parallel")
 dev.off()
 
 source("utils2.R")
 png(paste(write_dir, name, "_data_norm_pick_align_filter_image.png", sep = ""))
 .setup.layout(c(1,1),bg="black")
-image(data_norm_pick_align_filter,mz=283.26,plusminus=5*283.26/1e6,main="parallel")
+image(data, mz=283.26, plusminus=5*283.26/1e6, main="parallel")
 dev.off()
 
 #cleanup
