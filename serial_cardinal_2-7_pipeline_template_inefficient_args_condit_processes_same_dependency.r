@@ -1,3 +1,7 @@
+#load settings file into data frame file_data
+file = "settings_local.txt"
+file_data <- read.delim(file, header = FALSE, sep = "\t", dec = ".")
+
 #load necessary packages
 library(foreach)
 library(doParallel)
@@ -5,16 +9,24 @@ library(Cardinal)
 
 #VARIABLES
 
-name = "S1-1"
+#Consider maintaining a global variable to increment some file suffix which indicates
+#which process run or variable change occured for multi-run Slurm projects
+
+#name of imzML file to read in
+name = as.character(file_data[1, "V2"])
 
 #preprocessing and processing on decisions
-normalize_on = TRUE
-pick_on = TRUE
-align_on = TRUE
-filter_on = TRUE
+#check if this coercion is valid
+normalize_on = as.logical(file_data[2, "V2"])
+pick_on = as.logical(file_data[3, "V2"])
+align_on = as.logical(file_data[4, "V2"])
+filter_on = as.logical(file_data[5, "V2"])
+
+SNR = as.integer(file_data[6, "V2"])
 
 #Option to save separate objects after each (pre)processing method
-save_intermediates = TRUE
+#Should make way to save these to their own directory
+save_intermediates = as.logical(file_data[7, "V2"])
 
 #turn off queueing for (pre)processing functions, make new objects with each operation
 options(Cardinal.delay=FALSE)
@@ -53,7 +65,7 @@ rm(data_n)
 
 #conditionally picked data, must not occur before normalizing
 if (pick_on == TRUE) {
-data_p <- peakPick(data, method="adaptive", SNR=6)
+data_p <- peakPick(data, method="adaptive", SNR)
 rm(data)
 data <- data_p
 if (save_intermediates == TRUE) {
