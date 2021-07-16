@@ -4,13 +4,12 @@
 #SBATCH --ntasks=1               # total number of tasks across all nodes
 #SBATCH --cpus-per-task=1        # cpu-cores per task (>1 if multi-threaded tasks)
 #SBATCH --mem-per-cpu=2G         # memory per cpu-core (4G is default)
-#SBATCH --time=00:01:00          # total run time limit (HH:MM:SS)
+#SBATCH --time=00:16:00          # total run time limit (HH:MM:SS)
 #SBATCH --mail-type=begin        # send email when job begins
 #SBATCH --mail-type=end          # send email when job ends
 #SBATCH --mail-user=<YourNetID>@princeton.edu
 
 module purge
 module load R/3.6.2
-R
 
-python myscript.py
+Rscript cardinal_imzML_processing.R
