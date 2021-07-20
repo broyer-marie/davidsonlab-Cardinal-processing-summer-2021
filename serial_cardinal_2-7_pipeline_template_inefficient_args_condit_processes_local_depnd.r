@@ -47,7 +47,7 @@ dir.create(write_dir)
 
 #initial plot of data
 png(paste(write_dir, name, "_first_100_pixels.png", sep = ""))
-plot(data,pixel=1:100,main="spectra for first 100 pixels")
+plot(data,pixel=c(1, 100),main="spectra for first 100 pixels")
 dev.off()
 
 if (save_intermediates == TRUE) {
@@ -104,9 +104,9 @@ png(paste(write_dir, name, "_data_norm_pick_align_spectra.png", sep = ""))
 plot(data,pixel=seq(1,ncol(data),10),main="peak aligned_spectra")
 dev.off()
 
-#select peaks w/ frequency greater than 0.5, removes approx. 2000 peaks, maintains 1600
+#
 if (filter_on ==TRUE){
-data_f <- peakFilter(data, freq.min= 0.5)
+data_f <- peakFilter(data, freq.min= 0.01)
 rm(data)
 data <- data_f
 if (save_intermediates == TRUE) {
